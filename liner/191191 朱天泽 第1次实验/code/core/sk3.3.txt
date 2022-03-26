@@ -1,0 +1,3 @@
+clf = LogisticRegression(solver='newton-cg').fit(X, y)
+# 输出beta
+print(np.c_[clf.coef_,clf.intercept_])

@@ -1,0 +1,13 @@
+# 牛顿迭代
+def newton(ini_beta, error):
+    beta = ini_beta
+    old_l = None
+    while True:
+        subtractor = np.linalg.inv(get_partial2(beta)) @ get_partial1(beta)
+        beta = beta - subtractor.reshape((1, 3))[0]
+        cur_l = ell(beta)
+        if old_l is not None:
+            if np.abs(old_l - cur_l) <= error:
+                break
+        old_l = cur_l
+    return beta

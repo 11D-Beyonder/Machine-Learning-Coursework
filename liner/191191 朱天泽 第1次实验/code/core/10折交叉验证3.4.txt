@@ -1,0 +1,3 @@
+# 10折交叉验证
+y_predict = cross_val_predict(logisticRegression, x, y, cv=10)
+print("10折交叉验证错误率：", format(1 - metrics.accuracy_score(y, y_predict), ".20%"))

@@ -1,0 +1,6 @@
+# 一阶偏导
+def get_partial1(beta):
+    ans = np.zeros(3)
+    for i in range(17):
+        ans += X[i] * (y[i] - p1(X[i], beta))
+    return -ans

@@ -1,0 +1,3 @@
+# y=1概率
+def p1(x, beta):
+    return np.exp(beta @ x.T) / (1 + np.exp(beta @ x.T))

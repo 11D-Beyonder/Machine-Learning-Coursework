@@ -1,0 +1,4 @@
+# 取前50个、后50个数据
+iris = datasets.load_iris()
+x = np.r_[iris.data[0:50, :], iris.data[100:150, :]]
+y = np.r_[iris.target[0:50], iris.target[100:150]]

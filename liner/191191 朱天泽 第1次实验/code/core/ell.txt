@@ -1,0 +1,6 @@
+# 目标函数
+def ell(beta):
+    ans = 0
+    for i in range(17):
+        ans = ans - y[i] * np.dot(beta, X[i]) + np.log(1 + np.exp(np.dot(beta, X[i])))
+    return ans

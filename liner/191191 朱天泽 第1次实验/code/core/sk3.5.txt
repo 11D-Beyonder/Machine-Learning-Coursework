@@ -1,0 +1,3 @@
+w = LinearDiscriminantAnalysis(n_components=1).fit(X, y).coef_
+# 输出直线斜率
+print(w[0][1] / w[0][0])

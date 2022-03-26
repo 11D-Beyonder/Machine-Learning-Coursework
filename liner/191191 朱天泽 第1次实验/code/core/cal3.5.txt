@@ -1,0 +1,20 @@
+# 均值向量（列向量）
+mu0 = np.mean(X0, axis=0).reshape((2, 1))
+mu1 = np.mean(X1, axis=0).reshape((2, 1))
+
+# 协方差矩阵
+Sigma0 = (X0.T - mu0) @ (X0.T - mu0).T
+Sigma1 = (X1.T - mu1) @ (X1.T - mu1).T
+
+# 类内散度矩阵
+Sw = Sigma0 + Sigma1
+
+# 直线方向向量
+w = np.linalg.inv(Sw) @ (mu0 - mu1)
+
+# 输出直线斜率
+print(w[1] / w[0])
+
+# 使直线朝向为y正半轴
+if w[1] < 0:
+    w = -w

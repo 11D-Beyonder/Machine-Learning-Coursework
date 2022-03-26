@@ -1,0 +1,27 @@
+plt.figure()
+
+# 原始点
+plt.scatter(X0[:, 0], X0[:, 1], color='green', label='bad', alpha=.8, marker='.')
+plt.scatter(X1[:, 0], X1[:, 1], color='red', label='good', alpha=.8, marker='.')
+
+# 坏瓜投影点
+pro_X, pro_Y = get_projection(w, X0)
+plt.scatter(pro_X, pro_Y, color='green', label='bad(projection)', alpha=.8, marker='x')
+# 垂直线
+for i in range(9):
+    plt.plot([pro_X.T[i], X0[i][0]], [pro_Y.T[i][0], X0[i][1]], color='green', linestyle='--', linewidth=0.5)
+
+# 坏瓜投影点
+pro_X, pro_Y = get_projection(w, X1)
+plt.scatter(pro_X, pro_Y, color='red', label='good(projection)', alpha=.8, marker='x')
+# 垂直线
+for i in range(8):
+    plt.plot([pro_X.T[i], X1[i][0]], [pro_Y.T[i][0], X1[i][1]], color='red', linestyle='--', linewidth=0.5)
+
+# 投影直线
+plt.plot([0, w[0]], [0, w[1]], label=r'$y=w^T$x')
+
+plt.xlabel('density', fontsize=10)
+plt.ylabel('sugar content', fontsize=10)
+plt.legend()
+plt.show()

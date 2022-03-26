@@ -1,0 +1,11 @@
+# 留一法
+leaveOneOut = LeaveOneOut()
+# 命中数
+hits = 0
+# 分割为训练集和测试集
+for train, test in leaveOneOut.split(x):
+    logisticRegression.fit(x[train], y[train])
+    p = logisticRegression.predict(x[test])
+    if p == y[test]:
+        hits += 1
+print("留一法错误率", format(1 - hits / 100, ".20%"))
