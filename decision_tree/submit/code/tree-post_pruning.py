@@ -149,7 +149,7 @@ def generate_post_pruning_tree(g):
 
 
 data_name = 'balance-scale'
-solver = 'Gain'
+solver = 'Gini_index'
 
 D, class_dicts = load(data_name)
 sample_num = len(D)

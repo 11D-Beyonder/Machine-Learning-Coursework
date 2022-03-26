@@ -55,7 +55,7 @@ def Gini(D):
     for attribute, count in counter.items():
         # 计算所占比例
         p = count / tot
-        ans -= p * p
+        ans += p * p
     ans = 1 - ans
     return ans
 

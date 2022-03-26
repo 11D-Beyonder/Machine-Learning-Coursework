@@ -1,20 +1,9 @@
+import copy
+from queue import Queue
 import graphviz as gv
 import networkx as nx
 from DataLoader import load
 from util import *
-import copy
-
-data_name = 'lymphography'
-solver = 'Gain'
-
-D, class_dicts = load(data_name)
-sample_num = len(D)
-D_train = D[:int(sample_num * 0.8)]
-D_test = D[int(sample_num * 0.8):]
-
-# 创建空图
-g = nx.DiGraph()
-image = gv.Digraph()
 
 
 def predict(graph, x):
@@ -27,10 +16,10 @@ def predict(graph, x):
     cur = 1
     while True:
         node_label = graph.nodes[cur]['label']
-        if node_label.startswith('class'):
+        if node_label.startswith('class: '):
             return node_label
         else:
-            attribute_index = int(node_label.replace('attribute', ''))
+            attribute_index = int(node_label.replace('attribute: ', ''))
             for nei in graph.neighbors(cur):
                 if graph.get_edge_data(cur, nei)['label'] == str(x[attribute_index]):
                     cur = nei
@@ -46,7 +35,7 @@ def generate_image(graph, cur):
     """
     node_label = graph.nodes[cur]['label']
     image.node(str(cur), label=node_label)
-    if node_label.startswith('class'):
+    if node_label.startswith('class: '):
         # 到叶节点
         return
     else:
@@ -59,7 +48,7 @@ def get_accuracy(g, D):
     hits = 0
     X, y = split_data_and_target(D)
     for i in range(len(y)):
-        if predict(g, X[i]).replace('class', '') == str(y[i]):
+        if predict(g, X[i]).replace('class: ', '') == str(y[i]):
             hits += 1
     return hits / len(y)
 
@@ -94,8 +83,7 @@ def get_greatest_split_attribute(D, A: dict, solver='Gini_index'):
         raise Exception('solver不正确')
 
 
-def generate_pre_pruning_tree(D, A: dict, cur_node_index):
-    print(g.number_of_nodes())
+def generate_pre_pruning_tree(ini_D, ini_A):
     """
     预剪枝建树
     :param D: 训练集
@@ -103,75 +91,66 @@ def generate_pre_pruning_tree(D, A: dict, cur_node_index):
     :param cur_node_index: 当前点的索引
     :return: void
     """
-    X, y = split_data_and_target(D)
-    # 样本都属于同一类别
-    if len(set(y)) == 1:
-        g.nodes[cur_node_index]['label'] = 'class{}'.format(y[0])
-        return
+    ini_X, ini_y = split_data_and_target(ini_D)
+    g.add_node(1, label='class: {}'.format(collections.Counter(ini_y).most_common(1)[0][0]))
+    q = Queue()
+    q.put([1, ini_D, ini_A])
+    while not q.empty():
+        cur = q.get_nowait()
+        cur_node_index, D, A = cur[0], cur[1], cur[2]
+        X, y = split_data_and_target(D)
+        attribute_index = get_greatest_split_attribute(D, A, solver=solver)
 
-    # 属性集为空或所有样本的取值都相同
-    if len(A) == 0 or count_value_num(X, X[0]) == len(X):
-        # 找到出现次数最多的类别
-        g.nodes[cur_node_index]['label'] = 'class{}'.format(collections.Counter(y).most_common(1)[0][0])
-        return
+        stop_g = copy.deepcopy(g)
+        stop_g.nodes[cur_node_index]['label'] = 'class: {}'.format(collections.Counter(y).most_common(1)[0][0])
 
-    # 选出最优属性
-    attribute_index = get_greatest_split_attribute(D, A, solver=solver)
+        divide_g = copy.deepcopy(g)
+        divide_g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
+        # 遍历每一个可能取值v生成子节点
 
-    # 考量是否划分
-    # 划分后的树
-    divide_tree = copy.deepcopy(g)
-    divide_tree.nodes[cur_node_index]['label'] = 'attribute{}'.format(attribute_index)
-    for v in A[attribute_index]:
-        # 所有数据中在最优属性上取值为v的子集
-        Dv = get_Dv(D, attribute_index, v)
-        node_num = divide_tree.number_of_nodes()
-        if len(Dv) == 0:
-            # 创建分支节点
-            # 将分支节点标记为叶节点，其类别为D中样本最多的类别
-            divide_tree.add_node(node_num + 1, label='class{}'.format(collections.Counter(y).most_common(1)[0][0]))
-            divide_tree.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
-        else:
-            # 创建分支节点
-            # 将分支节点标记为叶节点，其类别为Dv中样本最多的类别
-            Xv, yv = split_data_and_target(Dv)
-            divide_tree.add_node(node_num + 1, label='class{}'.format(collections.Counter(yv).most_common(1)[0][0]))
-            divide_tree.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
-    # 在这一步停止划分的树
-    stop_tree = copy.deepcopy(g)
-    stop_tree.nodes[cur_node_index]['label'] = 'class{}'.format(collections.Counter(y).most_common(1)[0][0])
+        for v in class_dicts[attribute_index]:
+            Dv = get_Dv(D, attribute_index, v)
+            node_num = divide_g.number_of_nodes()
+            if len(Dv) == 0:
+                divide_g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(y).most_common(1)[0][0]))
+                divide_g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+            else:
+                Xv, yv = split_data_and_target(Dv)
+                divide_g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(yv).most_common(1)[0][0]))
+                divide_g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
 
-    # 不划分更准确便返回
-    if get_accuracy(stop_tree, D_test) >= get_accuracy(divide_tree, D_test):
-        g.nodes[cur_node_index]['label'] = 'class{}'.format(collections.Counter(y).most_common(1)[0][0])
-        return
+        if get_accuracy(stop_g, D_test) >= get_accuracy(divide_g, D_test):
+            continue
 
-    # 否则继续划分
-    # 标记当前节点行为
-    g.nodes[cur_node_index]['label'] = 'attribute{}'.format(attribute_index)
-    # 对最优属性的每个取值产生一个分支
-    for v in A[attribute_index]:
-        # 所有数据中在最优属性上取值为v的子集
-        Dv = get_Dv(D, attribute_index, v)
-        node_num = g.number_of_nodes()
-        if len(Dv) == 0:
-            # 创建分支节点
-            # 将分支节点标记为叶节点，其类别为D中样本最多的类别
-            g.add_node(node_num + 1, label='class{}'.format(collections.Counter(y).most_common(1)[0][0]))
-            g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
-        else:
-            # 创建分支节点
-            # 分支节点的属性选择需要下一步递归确定
-            Xv, yv = split_data_and_target(Dv)
-            g.add_node(node_num + 1, label='class{}'.format(collections.Counter(yv).most_common(1)[0][0]))
-            g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
-            new_A = copy.deepcopy(A)
-            new_A.pop(attribute_index)
-            generate_pre_pruning_tree(Dv, new_A, node_num + 1)
+        g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
+        for v in class_dicts[attribute_index]:
+            Dv = get_Dv(D, attribute_index, v)
+            node_num = g.number_of_nodes()
+            if len(Dv) == 0:
+                g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(y).most_common(1)[0][0]))
+                g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+            else:
+                Xv, yv = split_data_and_target(Dv)
+                g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(yv).most_common(1)[0][0]))
+                g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+                new_A = copy.deepcopy(A)
+                new_A.pop(attribute_index)
+                q.put([node_num + 1, Dv, new_A])
 
 
-g.add_node(1, label=None)
-generate_pre_pruning_tree(D_train, class_dicts, 1)
+data_name = 'balance-scale'
+solver = 'Gini_index'
+
+D, class_dicts = load(data_name)
+sample_num = len(D)
+D_train = D[:int(sample_num * 0.8)]
+D_test = D[int(sample_num * 0.8):]
+
+# 创建空图
+g = nx.DiGraph()
+image = gv.Digraph()
+
+generate_pre_pruning_tree(D_train, class_dicts)
 generate_image(g, 1)
 image.render('../image/pre_pruning-{}-{}.gv'.format(solver, data_name))
 print(get_accuracy(g, D_test))
