@@ -148,13 +148,16 @@ def generate_post_pruning_tree(g):
     return g
 
 
-data_name = 'balance-scale'
-solver = 'Gini_index'
+data_name = 'lymphography'
+# data_name = 'balance-scale'
+# data_name = 'tic-tac-toe'
+solver = 'Gain'
+# solver = 'Gini_index'
 
 D, class_dicts = load(data_name)
 sample_num = len(D)
-D_train = D[:int(sample_num * 0.9)]
-D_test = D[int(sample_num * 0.9):]
+D_train = D[:int(sample_num * 0.8)]
+D_test = D[int(sample_num * 0.8):]
 
 # 创建空图
 g = nx.DiGraph()

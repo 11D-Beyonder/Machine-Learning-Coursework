@@ -23,4 +23,4 @@ X = np.array([
 y = np.array([1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 clf = LogisticRegression(solver='newton-cg').fit(X, y)
 # 输出w和b
-print(np.c_[clf.coef_,clf.intercept_])
+print(np.c_[clf.coef_, clf.intercept_])

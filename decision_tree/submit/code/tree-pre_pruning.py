@@ -138,8 +138,11 @@ def generate_pre_pruning_tree(ini_D, ini_A):
                 q.put([node_num + 1, Dv, new_A])
 
 
-data_name = 'balance-scale'
-solver = 'Gini_index'
+data_name = 'lymphography'
+# data_name = 'balance-scale'
+# data_name = 'tic-tac-toe'
+solver = 'Gain'
+# solver = 'Gini_index'
 
 D, class_dicts = load(data_name)
 sample_num = len(D)
