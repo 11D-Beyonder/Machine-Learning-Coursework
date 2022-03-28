@@ -46,18 +46,18 @@ def generate_normal_tree(D, A: dict, cur_node_index):
     X, y = split_data_and_target(D)
     # 样本都属于同一类别
     if len(set(y)) == 1:
-        g.nodes[cur_node_index]['label'] = 'class{}'.format(y[0])
+        g.nodes[cur_node_index]['label'] = 'class: {}'.format(y[0])
         return
 
     # 属性集为空或所有样本的取值都相同
     if len(A) == 0 or count_value_num(X, X[0]) == len(X):
         # 找到出现次数最多的类别
-        g.nodes[cur_node_index]['label'] = 'class{}'.format(collections.Counter(y).most_common(1)[0][0])
+        g.nodes[cur_node_index]['label'] = 'class: {}'.format(collections.Counter(y).most_common(1)[0][0])
         return
     # 选出最优属性
     attribute_index = get_greatest_split_attribute(D, A, solver=solver)
     # 标记当前节点行为
-    g.nodes[cur_node_index]['label'] = 'attribute{}'.format(attribute_index)
+    g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
     # 对最优属性的每个取值产生一个分支
     for v in A[attribute_index]:
         # 所有数据中在最优属性上取值为v的子集
@@ -66,7 +66,7 @@ def generate_normal_tree(D, A: dict, cur_node_index):
         if len(Dv) == 0:
             # 创建分支节点
             # 将分支节点标记为叶节点，其类别为D中样本最多的类别
-            g.add_node(node_num + 1, label='class{}'.format(collections.Counter(y).most_common(1)[0][0]))
+            g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(y).most_common(1)[0][0]))
             g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
         else:
             # 创建分支节点
@@ -88,10 +88,10 @@ def predict(graph, x):
     cur = 1
     while True:
         node_label = graph.nodes[cur]['label']
-        if node_label.startswith('class'):
+        if node_label.startswith('class: '):
             return node_label
         else:
-            attribute_index = int(node_label.replace('attribute', ''))
+            attribute_index = int(node_label.replace('attribute: ', ''))
             for nei in graph.neighbors(cur):
                 if graph.get_edge_data(cur, nei)['label'] == str(x[attribute_index]):
                     cur = nei
@@ -120,7 +120,7 @@ def get_accuracy(g, D):
     hits = 0
     X, y = split_data_and_target(D)
     for i in range(len(y)):
-        if predict(g, X[i]).replace('class', '') == str(y[i]):
+        if predict(g, X[i]).replace('class: ', '') == str(y[i]):
             hits += 1
     return hits / len(y)
 

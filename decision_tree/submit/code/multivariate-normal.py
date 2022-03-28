@@ -2,6 +2,7 @@ import copy
 
 import graphviz as gv
 import networkx as nx
+import numpy as np
 from sklearn.linear_model import LogisticRegression
 from DataLoader import load
 from util import *
@@ -22,11 +23,13 @@ def generate_normal_tree(X, y, cur_node_index):
 
     clf = LogisticRegression().fit(X, y)
     w, b = clf.coef_[0], clf.intercept_[0]
+    g.nodes[cur_node_index]['w'] = w
+    g.nodes[cur_node_index]['b'] = b
     g.nodes[cur_node_index]['label'] = 'w={},b={}'.format(w, b)
     X1, y1 = [], []
     X2, y2 = [], []
     for i in range(len(y)):
-        if 1 / (1 + np.exp(-(np.dot(w, X[i]) + b))) > 0.5:
+        if np.dot(w, X[i]) + b > 0:
             X1.append(X[i])
             y1.append(y[i])
         else:
@@ -43,10 +46,10 @@ def generate_normal_tree(X, y, cur_node_index):
         return
 
     node_num = g.number_of_nodes()
-    g.add_node(node_num + 1, label=None)
-    g.add_node(node_num + 2, label=None)
-    g.add_edge(cur_node_index, node_num + 1, label='YES')
-    g.add_edge(cur_node_index, node_num + 2, label='NO')
+    g.add_node(node_num + 1, label=None, w=None, b=None)
+    g.add_node(node_num + 2, label=None, w=None, b=None)
+    g.add_edge(cur_node_index, node_num + 1, label='wx+b>0')
+    g.add_edge(cur_node_index, node_num + 2, label='wx+b<=0')
     generate_normal_tree(X1, y1, node_num + 1)
     generate_normal_tree(X2, y2, node_num + 2)
 
@@ -61,12 +64,17 @@ def predict(graph, x):
     cur = 1
     while True:
         node_label = graph.nodes[cur]['label']
-        if node_label.startswith('class'):
+        if node_label.startswith('class: '):
             return node_label
         else:
-            attribute_index = int(node_label.replace('attribute', ''))
+            w = graph.nodes[cur]['w']
+            b = graph.nodes[cur]['b']
+            val = np.dot(w, x) + b
             for nei in graph.neighbors(cur):
-                if graph.get_edge_data(cur, nei)['label'] == str(x[attribute_index]):
+                if graph.get_edge_data(cur, nei)['label'] == 'wx+b>0' and val > 0:
+                    cur = nei
+                    break
+                elif graph.get_edge_data(cur, nei)['label'] == 'wx+b<=0' and val <= 0:
                     cur = nei
                     break
 
@@ -93,7 +101,7 @@ def get_accuracy(g, D):
     hits = 0
     X, y = split_data_and_target(D)
     for i in range(len(y)):
-        if predict(g, X[i]).replace('class', '') == str(y[i]):
+        if predict(g, X[i]).replace('class: ', '') == str(y[i]):
             hits += 1
     return hits / len(y)
 
@@ -107,11 +115,11 @@ D_test = D[int(sample_num * 0.8):]
 
 # 创建空图
 g = nx.DiGraph()
-image = gv.Digraph()
+image = gv.Digraph(encoding='UTF-8')
 
-g.add_node(1, label=None)
+g.add_node(1, label=None, w=None, b=None)
 X, y = split_data_and_target(D_train)
 generate_normal_tree(X, y, 1)
 generate_image(g, 1)
 image.render('../image/multivariate-normal-{}.gv'.format(data_name))
-# print(get_accuracy(g, D_test))
+print(get_accuracy(g, D_test))

@@ -6,15 +6,17 @@ import pandas as pd
 """
 
 
-def load(data_num):
-    if data_num == 'lymphography':
+def load(data_name):
+    if data_name == 'lymphography':
         return load_lymphography()
-    elif data_num == 'balance-scale':
+    elif data_name == 'balance-scale':
         return load_balance_scale()
-    elif data_num == 'tic-tac-toe':
+    elif data_name == 'tic-tac-toe':
         return load_tic_tac_toe()
-    elif data_num == 'ionosphere':
+    elif data_name == 'ionosphere':
         return load_ionosphere()
+    elif data_name == 'watermelon2.0':
+        return load_watermelon2()
     else:
         raise Exception('数据源不存在')
 
@@ -76,6 +78,19 @@ def load_ionosphere():
     """
     ionosphere = pd.read_csv('../data/ionosphere.data', header=None)
     X = ionosphere.iloc[:, :-1].values
+    y = ionosphere.iloc[:, -1].values
+    D = np.c_[X, y]
+    return D
+
+
+def load_watermelon2():
+    """
+    读取watermelon2.0.data
+    最后一列为分类，其余为属性值
+    :return: 属性值，真实标记
+    """
+    ionosphere = pd.read_csv('../data/watermelon2.0.data', header=0)
+    X = ionosphere.iloc[:, 1:-1].values
     y = ionosphere.iloc[:, -1].values
     D = np.c_[X, y]
     return D

@@ -1,4 +1,123 @@
-https://archive.ics.uci.edu/ml/datasets/Lymphography
-https://archive.ics.uci.edu/ml/datasets/balance+scale
-https://archive.ics.uci.edu/ml/datasets/Ionosphere
-https://archive.ics.uci.edu/ml/datasets/Tic-Tac-Toe+Endgame
+\documentclass{ctexart}
+\usepackage{amsmath, amsfonts, amssymb} % 数学公式、符号
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green]{hyperref}
+\usepackage[left=2.50cm, right=2.50cm, top=2.50cm, bottom=2.50cm]{geometry} %页边距
+\usepackage{graphicx}   % 图片
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,chains}
+\usepackage{multirow}
+\usepackage{fancyhdr} %设置页眉、页脚
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+
+% 用来设置代码的样式
+\lstset{
+	basicstyle          =   \sffamily,          % 基本代码风格
+	keywordstyle        =   \bfseries,          % 关键字风格
+	commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+	stringstyle         =   \ttfamily,  % 字符串风格
+	flexiblecolumns,                % 别问为什么，加上这个
+	numbers             =   left,   % 行号的位置在左边
+	showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+	numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+	showstringspaces    =   false,
+	captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+	frame               =   lrtb,   % 显示边框
+}
+
+\lstdefinestyle{Python}{
+	language        =   Python, % 语言选Python
+	basicstyle      =   \zihao{-5}\ttfamily,
+	numberstyle     =   \zihao{-5}\ttfamily,
+	keywordstyle    =   \color{blue},
+	keywordstyle    =   [2] \color{teal},
+	stringstyle     =   \color{magenta},
+	commentstyle    =   \color{red}\ttfamily,
+	breaklines      =   true,   % 自动换行，建议不要写太长的行
+	columns         =   fixed,  % 如果不加这一句，字间距就不固定，很丑，必须加
+	basewidth       =   0.5em,
+}
+
+\title{\textbf{机器学习实验报告\\{\Large{决策树}}}} % 标题与子标题
+\author{\sffamily{朱天泽}} % 作者
+\date{（日期：\today）} % 日期
+
+\begin{document}
+	\maketitle\thispagestyle{fancy}
+	% 摘要开始
+	\noindent{\bf{摘要}}
+	在《机器学习》第四章中，我学习了决策树模型。在此次实验中，我尝试用DFS和BFS实现了多个用于分类任务的决策树模型，包括针对离散值的单变量决策树、基于对数几率回归的多变量决策树。在训练好决策树模型的基础上，我使用了4个UCI数据集，比较了未剪枝、预剪枝、后剪枝三种类型决策树的准确率。此外，我尝试使用了机器学习库scikit-learn，同自己实现的算法进行了比较。
+	
+	\noindent{\bf{关键词}} 决策树；剪枝；分类；搜索；scikit-learn
+	
+	% 正文开始
+	\section{习题1}
+	\subsection{编程题目理解}
+	题目要求：任意选择4个UCI数据集，对基于信息增益划分选择（ID3）、基于基尼指数划分选择（CART），基于对率回归划分选择的决策树算法（包括未剪枝、预剪枝、后剪枝三种）进行实验比较。
+	
+	ID3、CART两种划分选择，可用于实现单变量的决策树；对率回归是一个线性分类模型，基于对率回归，可以实现多变量决策树。
+	\subsection{决策树模型原理阐述}
+	
+	\subsection{决策树模型设计思路}
+	
+	\subsection{核心代码详解} 
+	\subsection{实验结果分析}
+
+	\subsection{学习收获}
+	
+	\subsection{参考资料}   
+	\begin{itemize}
+		\item
+	\end{itemize}
+
+	\section{习题2}
+	\subsection{编程题目理解}
+
+	\subsection{交叉验证法阐述}
+	
+	\subsection{核心代码分析}
+
+	\subsection{实验结果分析}
+	
+	\subsection{学习收获}
+	
+	\subsection{参考资料}
+	
+	\begin{itemize}
+		\item
+	\end{itemize}
+	
+	\section{习题3}
+	\subsection{编程题目理解}
+	\subsubsection{原理阐述}
+	\subsection{设计思路}
+	
+	\subsection{核心代码详解}
+	\subsubsection{数据集格式}
+	
+	\subsection{实验结果分析}
+
+	\subsection{学习收获}
+
+	
+	\subsection{参考资料}
+	\begin{itemize}
+		\item
+	\end{itemize}
+\end{document}
+
+
+
+
+%https://archive.ics.uci.edu/ml/datasets/Lymphography
+%https://archive.ics.uci.edu/ml/datasets/balance+scale
+%https://archive.ics.uci.edu/ml/datasets/Ionosphere
+%https://archive.ics.uci.edu/ml/datasets/Tic-Tac-Toe+Endgame
