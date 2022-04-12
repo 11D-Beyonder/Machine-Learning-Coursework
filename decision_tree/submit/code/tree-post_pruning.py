@@ -56,7 +56,7 @@ def generate_normal_tree(D, A: dict, cur_node_index):
         return
     # 选出最优属性
     attribute_index = get_greatest_split_attribute(D, A, solver=solver)
-    # 标记当前节点行为
+    # 标记当前结点行为
     g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
     # 对最优属性的每个取值产生一个分支
     for v in A[attribute_index]:
@@ -64,13 +64,13 @@ def generate_normal_tree(D, A: dict, cur_node_index):
         Dv = get_Dv(D, attribute_index, v)
         node_num = g.number_of_nodes()
         if len(Dv) == 0:
-            # 创建分支节点
-            # 将分支节点标记为叶节点，其类别为D中样本最多的类别
+            # 创建分支结点
+            # 将分支结点标记为叶结点，其类别为D中样本最多的类别
             g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(y).most_common(1)[0][0]))
             g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
         else:
-            # 创建分支节点
-            # 分支节点的属性选择需要下一步递归确定
+            # 创建分支结点
+            # 分支结点的属性选择需要下一步递归确定
             g.add_node(node_num + 1, label=None, data=Dv)
             g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
             new_A = copy.deepcopy(A)
@@ -102,13 +102,13 @@ def generate_image(graph, cur):
     """
     用graphviz画树
     :param graph: 构建好的决策树
-    :param cur: 当前遍历的节点
+    :param cur: 当前遍历的结点
     :return: void
     """
     node_label = graph.nodes[cur]['label']
     image.node(str(cur), label=node_label)
     if node_label.startswith('class: '):
-        # 到叶节点
+        # 到叶结点
         return
     else:
         for nei in graph.neighbors(cur):
@@ -126,6 +126,13 @@ def get_accuracy(g, D):
 
 
 def get_depth(cur):
+    """
+    获取结点深度
+    :param cur: 当前结点索引 
+    :return: void
+    """
+    # depth[i][0] 为深度
+    # depth[i][1] 为结点索引
     for nxt in g.neighbors(cur):
         depth[nxt][0] = depth[cur][0] + 1
         depth[nxt][1] = nxt
@@ -133,26 +140,32 @@ def get_depth(cur):
 
 
 def generate_post_pruning_tree(g):
+    """
+    后剪枝
+    :param g: 需要剪枝的决策树 
+    :return: void 
+    """
+    # 按照结点深度降序遍历
     for node in depth:
+        # 遇到叶结点跳过
         if g.nodes[node[1]]['label'].startswith('class: '):
             continue
-        # 一个深度较大的非叶节点
+
+        # 考量去掉其子结点后准确率是否提高
         new_g = copy.deepcopy(g)
         for nei in list(new_g.neighbors(node[1])):
             new_g.remove_node(nei)
         Dv = new_g.nodes[node[1]]['data']
         X, y = split_data_and_target(Dv)
         new_g.nodes[node[1]]['label'] = 'class: {}'.format(collections.Counter(y).most_common(1)[0][0])
+        # 剪枝后准确率更高
         if get_accuracy(new_g, D_test) >= get_accuracy(g, D_test):
             g = new_g
     return g
 
 
 data_name = 'lymphography'
-# data_name = 'balance-scale'
-# data_name = 'tic-tac-toe'
 solver = 'Gain'
-# solver = 'Gini_index'
 
 D, class_dicts = load(data_name)
 sample_num = len(D)

@@ -30,13 +30,13 @@ def generate_image(graph, cur):
     """
     用graphviz画树
     :param graph: 构建好的决策树
-    :param cur: 当前遍历的节点
+    :param cur: 当前遍历的结点
     :return: void
     """
     node_label = graph.nodes[cur]['label']
     image.node(str(cur), label=node_label)
     if node_label.startswith('class: '):
-        # 到叶节点
+        # 到叶结点
         return
     else:
         for nei in graph.neighbors(cur):
@@ -86,28 +86,30 @@ def get_greatest_split_attribute(D, A: dict, solver='Gini_index'):
 def generate_pre_pruning_tree(ini_D, ini_A):
     """
     预剪枝建树
-    :param D: 训练集
-    :param A: 属性字典
-    :param cur_node_index: 当前点的索引
+    :param ini_D: 训练集
+    :param ini_A: 属性字典
     :return: void
     """
     ini_X, ini_y = split_data_and_target(ini_D)
     g.add_node(1, label='class: {}'.format(collections.Counter(ini_y).most_common(1)[0][0]))
     q = Queue()
+    # 初始状态入队
     q.put([1, ini_D, ini_A])
     while not q.empty():
         cur = q.get_nowait()
+        # 取队头
         cur_node_index, D, A = cur[0], cur[1], cur[2]
         X, y = split_data_and_target(D)
         attribute_index = get_greatest_split_attribute(D, A, solver=solver)
 
+        # 停止搜索得到的决策树
         stop_g = copy.deepcopy(g)
         stop_g.nodes[cur_node_index]['label'] = 'class: {}'.format(collections.Counter(y).most_common(1)[0][0])
 
+        # 产生分支结点的决策树
         divide_g = copy.deepcopy(g)
         divide_g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
-        # 遍历每一个可能取值v生成子节点
-
+        # 遍历每一个可能取值v生成子结点
         for v in class_dicts[attribute_index]:
             Dv = get_Dv(D, attribute_index, v)
             node_num = divide_g.number_of_nodes()
@@ -119,9 +121,11 @@ def generate_pre_pruning_tree(ini_D, ini_A):
                 divide_g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(yv).most_common(1)[0][0]))
                 divide_g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
 
+        # 产生分支的决策树准确率低
         if get_accuracy(stop_g, D_test) >= get_accuracy(divide_g, D_test):
             continue
 
+        # 产生分支
         g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
         for v in class_dicts[attribute_index]:
             Dv = get_Dv(D, attribute_index, v)
@@ -138,11 +142,8 @@ def generate_pre_pruning_tree(ini_D, ini_A):
                 q.put([node_num + 1, Dv, new_A])
 
 
-data_name = 'lymphography'
-# data_name = 'balance-scale'
-# data_name = 'tic-tac-toe'
-solver = 'Gain'
-# solver = 'Gini_index'
+data_name = 'tic-tac-toe'
+solver = 'Gini_index'
 
 D, class_dicts = load(data_name)
 sample_num = len(D)

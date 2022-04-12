@@ -6,6 +6,14 @@ import pandas as pd
 """
 
 
+# tic_tac_toe = pd.read_csv('../data/tic-tac-toe.data', header=None)
+# X = tic_tac_toe.iloc[:, :9].values
+# y = tic_tac_toe.iloc[:, -1].values
+# D = np.c_[X, y]
+# np.random.shuffle(D)
+# pd.DataFrame(D, columns=None).to_csv('../data/modify.csv')
+
+
 def load(data_name):
     if data_name == 'lymphography':
         return load_lymphography()
@@ -59,14 +67,13 @@ def load_tic_tac_toe():
     最后一列为分类，其余为属性值
     :return: 属性值，真实标记，每个属性可取的值。
     """
-    tic_tac_toe = pd.read_csv('../data/tic-tac-toe.data', header=None)
-    X = tic_tac_toe.iloc[:, :9].values
+    tic_tac_toe = pd.read_csv('../data/modify.csv', header=0)
+    X = tic_tac_toe.iloc[:, 1:10].values
     y = tic_tac_toe.iloc[:, -1].values
+    D = np.c_[X, y]
     class_dicts = {}
     for i in range(9):
         class_dicts[i] = set(X[:, i])
-    D = np.c_[X, y]
-    np.random.shuffle(D)
     return D, class_dicts
 
 

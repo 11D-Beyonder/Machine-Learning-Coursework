@@ -56,7 +56,7 @@ def generate_normal_tree(D, A: dict, cur_node_index):
         return
     # 选出最优属性
     attribute_index = get_greatest_split_attribute(D, A, solver=solver)
-    # 标记当前节点行为
+    # 标记当前结点行为
     g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
     # 对最优属性的每个取值产生一个分支
     for v in A[attribute_index]:
@@ -64,13 +64,13 @@ def generate_normal_tree(D, A: dict, cur_node_index):
         Dv = get_Dv(D, attribute_index, v)
         node_num = g.number_of_nodes()
         if len(Dv) == 0:
-            # 创建分支节点
-            # 将分支节点标记为叶节点，其类别为D中样本最多的类别
+            # 创建分支结点
+            # 将分支结点标记为叶结点，其类别为D中样本最多的类别
             g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(y).most_common(1)[0][0]))
             g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
         else:
-            # 创建分支节点
-            # 分支节点的属性选择需要下一步递归确定
+            # 创建分支结点
+            # 分支结点的属性选择需要下一步递归确定
             g.add_node(node_num + 1, label=None)
             g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
             new_A = copy.deepcopy(A)
@@ -102,13 +102,13 @@ def generate_image(graph, cur):
     """
     用graphviz画树
     :param graph: 构建好的决策树
-    :param cur: 当前遍历的节点
+    :param cur: 当前遍历的结点
     :return: void
     """
     node_label = graph.nodes[cur]['label']
     image.node(str(cur), label=node_label)
     if node_label.startswith('class'):
-        # 到叶节点
+        # 到叶结点
         return
     else:
         for nei in graph.neighbors(cur):
@@ -125,11 +125,8 @@ def get_accuracy(g, D):
     return hits / len(y)
 
 
-data_name = 'lymphography'
-# data_name = 'balance-scale'
-# data_name = 'tic-tac-toe'
-solver = 'Gain'
-# solver = 'Gini_index'
+data_name = 'tic-tac-toe'
+solver = 'Gini_index'
 
 D, class_dicts = load(data_name)
 sample_num = len(D)

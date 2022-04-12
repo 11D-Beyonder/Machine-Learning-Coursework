@@ -14,6 +14,11 @@ def split_data_and_target(D):
 
 
 def Ent(D):
+    """
+    计算信息熵
+    :param D: 训练集
+    :return: 信息熵的值
+    """
     ans = 0
     X, y = split_data_and_target(D)
     counter = collections.Counter(y)
@@ -28,6 +33,13 @@ def Ent(D):
 
 
 def get_Dv(D, a, v):
+    """
+    得到子集 Dv
+    :param D: 训练集
+    :param a: 属性索引
+    :param v: 属性值
+    :return: 属性a上取值为v的子集Dv
+    """
     Dv = []
     for d in D:
         if d[a] == v:
@@ -36,6 +48,12 @@ def get_Dv(D, a, v):
 
 
 def Gain(D, a, class_dicts):
+    """
+    :param D: 训练集
+    :param a: 属性索引
+    :param class_dicts: 属性可取值
+    :return: 信息增益
+    """
     ans = Ent(D)
     # 遍历属性a的所有可能取值
     for v in class_dicts[a]:
@@ -46,6 +64,10 @@ def Gain(D, a, class_dicts):
 
 
 def Gini(D):
+    """
+    :param D: 训练集
+    :return: 基尼值
+    """
     ans = 0
     X, y = split_data_and_target(D)
     counter = collections.Counter(y)
@@ -61,6 +83,12 @@ def Gini(D):
 
 
 def Gini_index(D, a, class_dicts):
+    """
+    :param D: 训练集
+    :param a: 属性索引
+    :param class_dicts: 属性可取的值
+    :return: 基尼系数
+    """
     ans = 0
     for v in class_dicts[a]:
         # 找到属性a取值为v的样本
@@ -72,6 +100,11 @@ def Gini_index(D, a, class_dicts):
 
 
 def count_value_num(X, v):
+    """
+    :param X: 数组X
+    :param v: 值x
+    :return: X中取值为v的个数
+    """
     ans = 0
     for x in X:
         if all(x == v):

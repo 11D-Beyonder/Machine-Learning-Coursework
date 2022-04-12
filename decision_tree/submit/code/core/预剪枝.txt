@@ -1,0 +1,57 @@
+def generate_pre_pruning_tree(ini_D, ini_A):
+    """
+    预剪枝建树
+    :param ini_D: 训练集
+    :param ini_A: 属性字典
+    :return: void
+    """
+    ini_X, ini_y = split_data_and_target(ini_D)
+    g.add_node(1, label='class: {}'.format(collections.Counter(ini_y).most_common(1)[0][0]))
+    q = Queue()
+    # 初始状态入队
+    q.put([1, ini_D, ini_A])
+    while not q.empty():
+        cur = q.get_nowait()
+        # 取队头
+        cur_node_index, D, A = cur[0], cur[1], cur[2]
+        X, y = split_data_and_target(D)
+        attribute_index = get_greatest_split_attribute(D, A, solver='Gain')
+
+        # 停止搜索得到的决策树
+        stop_g = copy.deepcopy(g)
+        stop_g.nodes[cur_node_index]['label'] = 'class: {}'.format(collections.Counter(y).most_common(1)[0][0])
+
+        # 产生分支结点的决策树
+        divide_g = copy.deepcopy(g)
+        divide_g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
+        # 遍历每一个可能取值v生成子结点
+        for v in class_dicts[attribute_index]:
+            Dv = get_Dv(D, attribute_index, v)
+            node_num = divide_g.number_of_nodes()
+            if len(Dv) == 0:
+                divide_g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(y).most_common(1)[0][0]))
+                divide_g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+            else:
+                Xv, yv = split_data_and_target(Dv)
+                divide_g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(yv).most_common(1)[0][0]))
+                divide_g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+
+        # 产生分支的决策树准确率低
+        if get_accuracy(stop_g, D_test) >= get_accuracy(divide_g, D_test):
+            continue
+
+        # 产生分支
+        g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
+        for v in class_dicts[attribute_index]:
+            Dv = get_Dv(D, attribute_index, v)
+            node_num = g.number_of_nodes()
+            if len(Dv) == 0:
+                g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(y).most_common(1)[0][0]))
+                g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+            else:
+                Xv, yv = split_data_and_target(Dv)
+                g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(yv).most_common(1)[0][0]))
+                g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+                new_A = copy.deepcopy(A)
+                new_A.pop(attribute_index)
+                q.put([node_num + 1, Dv, new_A])

@@ -1,0 +1,39 @@
+def get_depth(cur):
+    """
+    获取结点深度
+    :param cur: 当前结点索引
+    :return: void
+    """
+    # depth[i][0] 为深度
+    # depth[i][1] 为结点索引
+    for nxt in g.neighbors(cur):
+        depth[nxt][0] = depth[cur][0] + 1
+        depth[nxt][1] = nxt
+        get_depth(nxt)
+
+# 按结点深度降序
+depth = np.array(sorted(depth, key=lambda d: d[0], reverse=True), dtype=int)
+
+def generate_post_pruning_tree(g):
+    """
+    后剪枝
+    :param g: 需要剪枝的决策树
+    :return: void
+    """
+    # 按照结点深度降序遍历
+    for node in depth:
+        # 遇到叶结点跳过
+        if g.nodes[node[1]]['label'].startswith('class: '):
+            continue
+
+        # 考量去掉其子结点后准确率是否提高
+        new_g = copy.deepcopy(g)
+        for nei in list(new_g.neighbors(node[1])):
+            new_g.remove_node(nei)
+        Dv = new_g.nodes[node[1]]['data']
+        X, y = split_data_and_target(Dv)
+        new_g.nodes[node[1]]['label'] = 'class: {}'.format(collections.Counter(y).most_common(1)[0][0])
+        # 剪枝后准确率更高
+        if get_accuracy(new_g, D_test) >= get_accuracy(g, D_test):
+            g = new_g
+    return g

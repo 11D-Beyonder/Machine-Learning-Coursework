@@ -1,9 +1,7 @@
-import copy
-
 import graphviz as gv
 import networkx as nx
-import numpy as np
 from sklearn.linear_model import LogisticRegression
+
 from DataLoader import load
 from util import *
 
@@ -18,14 +16,16 @@ def generate_normal_tree(X, y, cur_node_index):
     """
     # 样本都属于同一类别
     if len(set(y)) == 1:
-        g.nodes[cur_node_index]['label'] = 'class{}'.format(y[0])
+        g.nodes[cur_node_index]['label'] = 'class: {}'.format(y[0])
         return
 
+    # 进行线性分类
     clf = LogisticRegression().fit(X, y)
     w, b = clf.coef_[0], clf.intercept_[0]
     g.nodes[cur_node_index]['w'] = w
     g.nodes[cur_node_index]['b'] = b
     g.nodes[cur_node_index]['label'] = 'w={},b={}'.format(w, b)
+    # 得到分类后的子集
     X1, y1 = [], []
     X2, y2 = [], []
     for i in range(len(y)):
@@ -45,6 +45,7 @@ def generate_normal_tree(X, y, cur_node_index):
         g.nodes[cur_node_index]['label'] = 'class: {}'.format(collections.Counter(y).most_common(1)[0][0])
         return
 
+    # 产生分支节点
     node_num = g.number_of_nodes()
     g.add_node(node_num + 1, label=None, w=None, b=None)
     g.add_node(node_num + 2, label=None, w=None, b=None)
@@ -83,13 +84,13 @@ def generate_image(graph, cur):
     """
     用graphviz画树
     :param graph: 构建好的决策树
-    :param cur: 当前遍历的节点
+    :param cur: 当前遍历的结点
     :return: void
     """
     node_label = graph.nodes[cur]['label']
     image.node(str(cur), label=node_label)
     if node_label.startswith('class'):
-        # 到叶节点
+        # 到叶结点
         return
     else:
         for nei in graph.neighbors(cur):

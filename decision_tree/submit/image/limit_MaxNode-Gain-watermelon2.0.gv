@@ -1,9 +1,9 @@
 digraph {
-	1 [label="脐部" fontname="Microsoft YaHei"]
-	1 -> 2 [label="凹陷" fontname="Microsoft YaHei"]
-	2 [label="class: 好瓜" fontname="Microsoft YaHei"]
-	1 -> 3 [label="平坦" fontname="Microsoft YaHei"]
-	3 [label="class: 坏瓜" fontname="Microsoft YaHei"]
-	1 -> 4 [label="稍凹" fontname="Microsoft YaHei"]
+	1 [label="色泽" fontname="Microsoft YaHei"]
+	1 -> 2 [label="浅白" fontname="Microsoft YaHei"]
+	2 [label="class: 坏瓜" fontname="Microsoft YaHei"]
+	1 -> 3 [label="青绿" fontname="Microsoft YaHei"]
+	3 [label="class: 好瓜" fontname="Microsoft YaHei"]
+	1 -> 4 [label="乌黑" fontname="Microsoft YaHei"]
 	4 [label="class: 好瓜" fontname="Microsoft YaHei"]
 }

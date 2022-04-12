@@ -68,6 +68,7 @@ def generate_normal_tree(ini_D, ini_A, MaxNode):
 
         attribute_index = get_greatest_split_attribute(D, A, solver='Gain')
 
+        # 超过限制则不扩展
         if g.number_of_nodes() + len(A[attribute_index]) > MaxNode:
             return
 
@@ -112,7 +113,7 @@ def generate_image(graph, cur):
     """
     用graphviz画树
     :param graph: 构建好的决策树
-    :param cur: 当前遍历的节点
+    :param cur: 当前遍历的结点
     :return: void
     """
     node_label = graph.nodes[cur]['label']

@@ -1,0 +1,50 @@
+def generate_normal_tree(ini_D, ini_A, MaxNode):
+    """
+    建树
+    :param D: 训练集
+    :param A: 属性字典
+    :param cur_node_index: 当前点的索引
+    :return: void
+    """
+    ini_X, ini_y = split_data_and_target(ini_D)
+    g.add_node(1, label='class: {}'.format(collections.Counter(ini_y).most_common(1)[0][0]))
+    q = Queue()
+    q.put([1, ini_D, ini_A])
+    while not q.empty():
+        cur = q.get_nowait()
+        cur_node_index, D, A = cur[0], cur[1], cur[2]
+
+        X, y = split_data_and_target(D)
+
+        # 样本都属于同一类别
+        if len(set(y)) == 1:
+            g.nodes[cur_node_index]['label'] = 'class: {}'.format(y[0])
+            continue
+
+        # 属性集为空或所有样本的取值都相同
+        if len(A) == 0 or count_value_num(X, X[0]) == len(X):
+            # 找到出现次数最多的类别
+            g.nodes[cur_node_index]['label'] = 'class: {}'.format(collections.Counter(y).most_common(1)[0][0])
+            continue
+
+        attribute_index = get_greatest_split_attribute(D, A, solver='Gain')
+
+        # 超过限制则不扩展
+        if g.number_of_nodes() + len(A[attribute_index]) > MaxNode:
+            return
+
+        g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
+
+        for v in A[attribute_index]:
+            Dv = get_Dv(D, attribute_index, v)
+            node_num = g.number_of_nodes()
+            if len(Dv) == 0:
+                g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(y).most_common(1)[0][0]))
+                g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+            else:
+                Xv, yv = split_data_and_target(Dv)
+                g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(yv).most_common(1)[0][0]))
+                g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+                new_A = copy.deepcopy(A)
+                new_A.pop(attribute_index)
+                q.put([node_num + 1, Dv, new_A])

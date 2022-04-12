@@ -1,0 +1,41 @@
+def generate_normal_tree(D, A, cur_node_index):
+    """
+    建树
+    :param D: 训练集
+    :param A: 属性字典
+    :param cur_node_index: 当前点的索引
+    :return: void
+    """
+    X, y = split_data_and_target(D)
+    # 样本都属于同一类别
+    if len(set(y)) == 1:
+        g.nodes[cur_node_index]['label'] = 'class: {}'.format(y[0])
+        return
+
+    # 属性集为空或所有样本的取值都相同
+    if len(A) == 0 or count_value_num(X, X[0]) == len(X):
+        # 找到出现次数最多的类别
+        g.nodes[cur_node_index]['label'] = 'class: {}'.format(collections.Counter(y).most_common(1)[0][0])
+        return
+    # 选出最优属性
+    attribute_index = get_greatest_split_attribute(D, A, solver='Gain')
+    # 标记当前节点行为
+    g.nodes[cur_node_index]['label'] = 'attribute: {}'.format(attribute_index)
+    # 对最优属性的每个取值产生一个分支
+    for v in A[attribute_index]:
+        # 所有数据中在最优属性上取值为v的子集
+        Dv = get_Dv(D, attribute_index, v)
+        node_num = g.number_of_nodes()
+        if len(Dv) == 0:
+            # 创建分支节点
+            # 将分支节点标记为叶节点，其类别为D中样本最多的类别
+            g.add_node(node_num + 1, label='class: {}'.format(collections.Counter(y).most_common(1)[0][0]))
+            g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+        else:
+            # 创建分支节点
+            # 分支节点的属性选择需要下一步递归确定
+            g.add_node(node_num + 1, label=None)
+            g.add_edge(cur_node_index, node_num + 1, label='{}'.format(v))
+            new_A = copy.deepcopy(A)
+            new_A.pop(attribute_index)
+            generate_normal_tree(Dv, new_A, node_num + 1)
