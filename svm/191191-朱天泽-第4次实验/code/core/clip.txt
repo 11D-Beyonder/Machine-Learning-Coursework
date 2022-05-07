@@ -1,0 +1,7 @@
+def clip(a, _L, _H):
+    if a < _L:
+        return _L
+    elif a > _H:
+        return _H
+    else:
+        return a

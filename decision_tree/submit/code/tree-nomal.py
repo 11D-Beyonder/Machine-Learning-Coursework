@@ -1,8 +1,10 @@
+import copy
+
 import graphviz as gv
 import networkx as nx
+
 from DataLoader import load
 from util import *
-import copy
 
 
 def get_greatest_split_attribute(D, A: dict, solver='Gini_index'):
@@ -125,7 +127,7 @@ def get_accuracy(g, D):
     return hits / len(y)
 
 
-data_name = 'tic-tac-toe'
+data_name = 'lymphography'
 solver = 'Gini_index'
 
 D, class_dicts = load(data_name)

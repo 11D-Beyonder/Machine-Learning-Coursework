@@ -1,8 +1,5 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from pylab import *
 import pandas as pd
-import operator
+from pylab import *
 
 # 特征字典，后面用到了好多次，干脆当全局变量了
 featureDic = {
@@ -139,7 +136,7 @@ def NNetworkBP(dataSet, eta, thresh):
     while err > thresh:
         b = sigmoid(np.dot(x, v) - gamma)  # m x (n+1)
         beta = np.dot(b, w)  # m x 1
-        # 预测值
+        # predict.txt
         yHat = sigmoid(beta - theta)  # m x 1
         # 输出层神经元梯度项
         g = yHat * (1 - yHat) * (y - yHat)  # m x 1
@@ -182,7 +179,7 @@ def NNetworkABP(dataSet, eta, thresh):
         for i in range(m):
             b = sigmoid(np.dot(x[i], v) - gamma)  # 1 x (n+1)
             beta = np.dot(b, w)[0]  # 1
-            # 预测值
+            # predict.txt
             yHat = sigmoid(beta - theta)  # 1
             # 输出层神经元梯度项
             g = yHat * (1 - yHat) * (y[i] - yHat)  # 1

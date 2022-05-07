@@ -1,7 +1,9 @@
 import copy
 from queue import Queue
+
 import graphviz as gv
 import networkx as nx
+
 from DataLoader import load
 from util import *
 
@@ -142,7 +144,7 @@ def generate_pre_pruning_tree(ini_D, ini_A):
                 q.put([node_num + 1, Dv, new_A])
 
 
-data_name = 'tic-tac-toe'
+data_name = 'lymphography'
 solver = 'Gini_index'
 
 D, class_dicts = load(data_name)

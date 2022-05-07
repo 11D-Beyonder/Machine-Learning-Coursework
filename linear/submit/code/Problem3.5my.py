@@ -1,5 +1,6 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
 
 # 获取投影坐标
 def get_projection(w, X):
@@ -82,7 +83,7 @@ for i in range(9):
 # 坏瓜投影点
 pro_X, pro_Y = get_projection(w, X1)
 plt.scatter(pro_X, pro_Y, color='red', label='good(projection)', alpha=.8, marker='x')
-# 垂直线syntax
+# 垂直线
 for i in range(8):
     plt.plot([pro_X.T[i], X1[i][0]], [pro_Y.T[i][0], X1[i][1]], color='red', linestyle='--', linewidth=0.5)
 

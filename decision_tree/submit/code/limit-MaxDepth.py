@@ -1,8 +1,8 @@
 import copy
 from queue import Queue
+
 import graphviz as gv
 import networkx as nx
-import numpy as np
 
 from util import *
 
@@ -174,5 +174,5 @@ image = gv.Digraph()
 
 generate_normal_tree(D_train, class_dicts, 5)
 generate_image(g, 1)
-image.render('../image/limit_MaxDepth-Gain-watermelon2.0.gv')
+image.view()
 print(get_accuracy(g, D_test))
