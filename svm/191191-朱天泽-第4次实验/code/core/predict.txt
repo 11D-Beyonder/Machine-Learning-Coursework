@@ -1,5 +1,0 @@
-def f(_x):
-    ans = b
-    for i in range(m):
-        ans += alpha[i] * y[i] * kappa(_x, X[i])
-    return ans
