@@ -32,7 +32,8 @@ def cal_error(split_point, sign, D, feature_values):
 
 def get_best_split_point(feature_index, D):
     feature_values = X[:, feature_index]
-    split_points = [(feature_values[i] + feature_values[i + 1]) / 2 for i in range(feature_values.shape[0] - 1)]
+    sorted_feature_values = np.sort(feature_values)
+    split_points = [(sorted_feature_values[i] + sorted_feature_values[i + 1]) / 2 for i in range(m - 1)]
     best_split_point = None
     min_error = np.inf
     best_sign = None
@@ -58,6 +59,7 @@ def build_best_stump(D):
             best_feature = feature_index
             best_split_point = split_point
             best_sign = sign
+            print(best_feature, best_sign, best_split_point, min_error)
     return best_feature, best_split_point, best_sign, min_error
 
 
