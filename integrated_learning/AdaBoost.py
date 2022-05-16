@@ -3,6 +3,12 @@ import pandas as pd
 from matplotlib import cm
 from matplotlib import pyplot as plt
 
+"""
+这里题目有点问题，如果以不剪枝决策树为基学习器，
+可以生成一个完美符合数据的决策树，此时AdaBoost就没意义了，
+因为第一颗树错误率就为0了，样本权重也不会发生改变。
+"""
+
 
 def cal_error(split_point, sign, D, feature_values):
     error = 0
@@ -96,7 +102,7 @@ if __name__ == '__main__':
     X = data[:, :-1]
     m, n = X.shape
     y = data[:, -1]
-    plt.figure(figsize=(15, 5))
+    plt.figure(figsize=(17, 4))
     for p, T in zip([1, 2, 3], [3, 5, 11]):
         model = AdaBoost(T)
 
@@ -131,5 +137,5 @@ if __name__ == '__main__':
 
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置字体
     plt.rcParams['axes.unicode_minus'] = False  # 该语句解决图像中的“-”负号的乱码问题
-    plt.legend()
+    plt.tight_layout()
     plt.show()
