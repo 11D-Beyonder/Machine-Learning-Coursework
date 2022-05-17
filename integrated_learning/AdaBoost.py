@@ -59,7 +59,6 @@ def build_best_stump(D):
             best_feature = feature_index
             best_split_point = split_point
             best_sign = sign
-            print(best_feature, best_sign, best_split_point, min_error)
     return best_feature, best_split_point, best_sign, min_error
 
 
@@ -134,6 +133,7 @@ if __name__ == '__main__':
             else:
                 plt.plot(xx, split_point)
 
+        plt.title('{}个基学习器'.format(T))
         plt.xlabel('密度')
         plt.ylabel('含糖率')
 
