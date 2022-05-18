@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
         plt.subplot(1, 3, p)
         # 预测网格上的结果
-        step = 1000
+        step = 200
         xx = np.linspace(0.2, 0.8, step)
         yy = np.linspace(0, 0.5, step)
         XX, YY = np.meshgrid(xx, yy)
@@ -49,8 +49,6 @@ if __name__ == '__main__':
         ZZ = np.empty(len(points))
         for i in range(len(points)):
             ZZ[i] = predict(model, points[i])
-            if i % 1000 == 0:
-                print(i)
         ZZ = ZZ.reshape(XX.shape)
         # 划分边界
         # https://matplotlib.org/3.5.0/tutorials/colors/colormaps.html
@@ -61,7 +59,6 @@ if __name__ == '__main__':
         plt.title('{}个基学习器'.format(T))
         plt.xlabel('密度')
         plt.ylabel('含糖率')
-        print(T)
 
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置字体
     plt.rcParams['axes.unicode_minus'] = False  # 该语句解决图像中的“-”负号的乱码问题

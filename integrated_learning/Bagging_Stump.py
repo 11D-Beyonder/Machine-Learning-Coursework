@@ -106,7 +106,7 @@ if __name__ == '__main__':
 
         plt.subplot(1, 3, p)
         # 预测网格上的结果
-        step = 1000
+        step = 100
         xx = np.linspace(0.2, 0.8, step)
         yy = np.linspace(0, 0.5, step)
         XX, YY = np.meshgrid(xx, yy)
@@ -118,9 +118,8 @@ if __name__ == '__main__':
         # 划分边界
         # https://matplotlib.org/3.5.0/tutorials/colors/colormaps.html
         plt.contourf(XX, YY, ZZ, alpha=0.4, cmap=cm.gist_ncar)
-        X, y = split_X_y(data)
-        plt.scatter(X[y == 1, 0], X[y == 1, 1], label='好瓜', color='red', edgecolors='k')
-        plt.scatter(X[y == -1, 0], X[y == -1, 1], label='坏瓜', color='green', edgecolors='k')
+        plt.scatter(data[data[:, -1] == 1, 0], data[data[:, -1] == 1, 1], label='好瓜', color='red', edgecolors='k')
+        plt.scatter(data[data[:, -1] == -1, 0], data[data[:, -1] == -1, 1], label='坏瓜', color='green', edgecolors='k')
 
         for i in range(len(model)):
             # 得到分界点
