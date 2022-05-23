@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
         plt.subplot(1, 3, p)
         # 预测网格上的结果
-        step = 200
+        step = 100
         xx = np.linspace(0.2, 0.8, step)
         yy = np.linspace(0, 0.5, step)
         XX, YY = np.meshgrid(xx, yy)
