@@ -1,0 +1,23 @@
+digraph {
+    graph [ rankdir=TB ]
+
+    0 [ label="CONVEX_AREA<277358" ]
+    0 -> 1 [label="yes, missing" color="#0000FF"]
+    0 -> 2 [label="no" color="#FF0000"]
+
+    1 [ label="CONVEX_AREA<177919" ]
+    1 -> 3 [label="yes, missing" color="#0000FF"]
+    1 -> 4 [label="no" color="#FF0000"]
+
+    3 [ label="leaf=-0.133696884" ]
+
+    4 [ label="leaf=0.306320071" ]
+
+    2 [ label="KurtosisRG<1.81865001" ]
+    2 -> 5 [label="yes, missing" color="#0000FF"]
+    2 -> 6 [label="no" color="#FF0000"]
+
+    5 [ label="leaf=0.177217737" ]
+
+    6 [ label="leaf=-0.153771132" ]
+}

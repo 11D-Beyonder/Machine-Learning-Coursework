@@ -59,4 +59,5 @@ def predict(ex):
     return ans
 
 
-print(predict(['青绿', '蜷缩', '浊响', '清晰', '凹陷', '硬滑', 0.697, 0.46]))
+if __name__ == '__main__':
+    print(predict(['青绿', '蜷缩', '浊响', '清晰', '凹陷', '硬滑', 0.697, 0.46]))

@@ -129,9 +129,11 @@ if __name__ == '__main__':
                 plt.plot(split_point, yy)
             else:
                 plt.plot(xx, split_point)
+
         plt.title('{}个基学习器'.format(T))
         plt.xlabel('密度')
         plt.ylabel('含糖率')
+        plt.legend(loc='best')
 
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置字体
     plt.rcParams['axes.unicode_minus'] = False  # 该语句解决图像中的“-”负号的乱码问题

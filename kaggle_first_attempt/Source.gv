@@ -1,0 +1,185 @@
+digraph {
+    graph [ rankdir=TB ]
+
+    0 [ label="SOLIDITY<0.988049984" ]
+    0 -> 1 [label="yes, missing" color="#0000FF"]
+    0 -> 2 [label="no" color="#FF0000"]
+
+    1 [ label="CONVEX_AREA<272004.5" ]
+    1 -> 3 [label="yes, missing" color="#0000FF"]
+    1 -> 4 [label="no" color="#FF0000"]
+
+    3 [ label="MeanRB<93.3266449" ]
+    3 -> 7 [label="yes, missing" color="#0000FF"]
+    3 -> 8 [label="no" color="#FF0000"]
+
+    7 [ label="ECCENTRICITY<0.694450021" ]
+    7 -> 15 [label="yes, missing" color="#0000FF"]
+    7 -> 16 [label="no" color="#FF0000"]
+
+    15 [ label="leaf=0.100000009" ]
+
+    16 [ label="AREA<176305" ]
+    16 -> 31 [label="yes, missing" color="#0000FF"]
+    16 -> 32 [label="no" color="#FF0000"]
+
+    31 [ label="leaf=0.225000009" ]
+
+    32 [ label="leaf=1.44375002" ]
+
+    8 [ label="SHAPEFACTOR_4<0.991750002" ]
+    8 -> 17 [label="yes, missing" color="#0000FF"]
+    8 -> 18 [label="no" color="#FF0000"]
+
+    17 [ label="SkewRB<-0.228650004" ]
+    17 -> 33 [label="yes, missing" color="#0000FF"]
+    17 -> 34 [label="no" color="#FF0000"]
+
+    33 [ label="AREA<209004.5" ]
+    33 -> 45 [label="yes, missing" color="#0000FF"]
+    33 -> 46 [label="no" color="#FF0000"]
+
+    45 [ label="leaf=0.356250018" ]
+
+    46 [ label="leaf=0.112500004" ]
+
+    34 [ label="MAJOR_AXIS<617.233093" ]
+    34 -> 47 [label="yes, missing" color="#0000FF"]
+    34 -> 48 [label="no" color="#FF0000"]
+
+    47 [ label="leaf=0.300000012" ]
+
+    48 [ label="leaf=1.32500005" ]
+
+    18 [ label="PERIMETER<1683.59058" ]
+    18 -> 35 [label="yes, missing" color="#0000FF"]
+    18 -> 36 [label="no" color="#FF0000"]
+
+    35 [ label="leaf=0.430263191" ]
+
+    36 [ label="leaf=0.135000005" ]
+
+    4 [ label="EntropyRG<-3.48757279e+10" ]
+    4 -> 9 [label="yes, missing" color="#0000FF"]
+    4 -> 10 [label="no" color="#FF0000"]
+
+    9 [ label="MINOR_AXIS<465.515198" ]
+    9 -> 19 [label="yes, missing" color="#0000FF"]
+    9 -> 20 [label="no" color="#FF0000"]
+
+    19 [ label="leaf=0.100000009" ]
+
+    20 [ label="EntropyRG<-3.54821407e+10" ]
+    20 -> 37 [label="yes, missing" color="#0000FF"]
+    20 -> 38 [label="no" color="#FF0000"]
+
+    37 [ label="MINOR_AXIS<525.905396" ]
+    37 -> 49 [label="yes, missing" color="#0000FF"]
+    37 -> 50 [label="no" color="#FF0000"]
+
+    49 [ label="leaf=1.3821429" ]
+
+    50 [ label="leaf=1.03443396" ]
+
+    38 [ label="leaf=0.075000003" ]
+
+    10 [ label="MINOR_AXIS<580.437866" ]
+    10 -> 21 [label="yes, missing" color="#0000FF"]
+    10 -> 22 [label="no" color="#FF0000"]
+
+    21 [ label="leaf=1.37103653" ]
+
+    22 [ label="leaf=0.725000024" ]
+
+    2 [ label="MeanRG<79.328949" ]
+    2 -> 5 [label="yes, missing" color="#0000FF"]
+    2 -> 6 [label="no" color="#FF0000"]
+
+    5 [ label="MINOR_AXIS<613.211792" ]
+    5 -> 11 [label="yes, missing" color="#0000FF"]
+    5 -> 12 [label="no" color="#FF0000"]
+
+    11 [ label="AREA<216097.5" ]
+    11 -> 23 [label="yes, missing" color="#0000FF"]
+    11 -> 24 [label="no" color="#FF0000"]
+
+    23 [ label="leaf=0.200000018" ]
+
+    24 [ label="leaf=1.38947368" ]
+
+    12 [ label="EXTENT<0.793900013" ]
+    12 -> 25 [label="yes, missing" color="#0000FF"]
+    12 -> 26 [label="no" color="#FF0000"]
+
+    25 [ label="leaf=0.666666746" ]
+
+    26 [ label="leaf=-0.075000003" ]
+
+    6 [ label="SkewRB<0.845499992" ]
+    6 -> 13 [label="yes, missing" color="#0000FF"]
+    6 -> 14 [label="no" color="#FF0000"]
+
+    13 [ label="AREA<249312.5" ]
+    13 -> 27 [label="yes, missing" color="#0000FF"]
+    13 -> 28 [label="no" color="#FF0000"]
+
+    27 [ label="EntropyRB<-2.6868011e+10" ]
+    27 -> 39 [label="yes, missing" color="#0000FF"]
+    27 -> 40 [label="no" color="#FF0000"]
+
+    39 [ label="MINOR_AXIS<390.756104" ]
+    39 -> 51 [label="yes, missing" color="#0000FF"]
+    39 -> 52 [label="no" color="#FF0000"]
+
+    51 [ label="leaf=0.327272743" ]
+
+    52 [ label="leaf=0.143181816" ]
+
+    40 [ label="SkewRB<0.320550025" ]
+    40 -> 53 [label="yes, missing" color="#0000FF"]
+    40 -> 54 [label="no" color="#FF0000"]
+
+    53 [ label="leaf=0.408482164" ]
+
+    54 [ label="leaf=0.728571475" ]
+
+    28 [ label="ROUNDNESS<0.920799971" ]
+    28 -> 41 [label="yes, missing" color="#0000FF"]
+    28 -> 42 [label="no" color="#FF0000"]
+
+    41 [ label="StdDevRB<25.21595" ]
+    41 -> 55 [label="yes, missing" color="#0000FF"]
+    41 -> 56 [label="no" color="#FF0000"]
+
+    55 [ label="leaf=0.318750024" ]
+
+    56 [ label="leaf=1.14324331" ]
+
+    42 [ label="SkewRR<-0.127800003" ]
+    42 -> 57 [label="yes, missing" color="#0000FF"]
+    42 -> 58 [label="no" color="#FF0000"]
+
+    57 [ label="leaf=0.0800000057" ]
+
+    58 [ label="leaf=0.614285767" ]
+
+    14 [ label="SkewRR<0.277500004" ]
+    14 -> 29 [label="yes, missing" color="#0000FF"]
+    14 -> 30 [label="no" color="#FF0000"]
+
+    29 [ label="leaf=-0.145161286" ]
+
+    30 [ label="StdDevRG<24.6649494" ]
+    30 -> 43 [label="yes, missing" color="#0000FF"]
+    30 -> 44 [label="no" color="#FF0000"]
+
+    43 [ label="MINOR_AXIS<672.208862" ]
+    43 -> 59 [label="yes, missing" color="#0000FF"]
+    43 -> 60 [label="no" color="#FF0000"]
+
+    59 [ label="leaf=-0.13333334" ]
+
+    60 [ label="leaf=0.600000024" ]
+
+    44 [ label="leaf=0.684375048" ]
+}

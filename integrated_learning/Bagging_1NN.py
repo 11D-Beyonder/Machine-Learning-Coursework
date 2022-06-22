@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
         plt.subplot(1, 3, p)
         # 预测网格上的结果
-        step = 100
+        step = 1000
         xx = np.linspace(0.2, 0.8, step)
         yy = np.linspace(0, 0.5, step)
         XX, YY = np.meshgrid(xx, yy)
@@ -56,6 +56,7 @@ if __name__ == '__main__':
         plt.scatter(X[y == 1, 0], X[y == 1, 1], label='好瓜', color='red', edgecolors='k')
         plt.scatter(X[y == -1, 0], X[y == -1, 1], label='坏瓜', color='green', edgecolors='k')
 
+        plt.legend(loc='best')
         plt.title('{}个基学习器'.format(T))
         plt.xlabel('密度')
         plt.ylabel('含糖率')

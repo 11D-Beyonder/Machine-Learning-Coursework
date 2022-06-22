@@ -46,7 +46,7 @@ def cal_ent(data, D):
     return -p_good * m1 - p_bad * m2
 
 
-def build_tree(cur: dict, data, D, deep=2):
+def build_tree(cur: dict, data, D, deep=3):
     """
     树结点
     label: None 或 种类标签
@@ -177,11 +177,13 @@ if __name__ == '__main__':
         plt.scatter(dataset[dataset[:, -1] == -1, 0], dataset[dataset[:, -1] == -1, 1], label='坏瓜', color='green',
                     edgecolors='k')
 
+        plt.legend(loc='best')
         plt.title('{}个基学习器'.format(T))
         plt.xlabel('密度')
         plt.ylabel('含糖率')
 
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 设置字体
     plt.rcParams['axes.unicode_minus'] = False  # 该语句解决图像中的“-”负号的乱码问题
+
     plt.tight_layout()
     plt.show()

@@ -1,0 +1,23 @@
+digraph {
+    graph [ rankdir=TB ]
+
+    0 [ label="MINOR_AXIS<632.55188" ]
+    0 -> 1 [label="yes, missing" color="#0000FF"]
+    0 -> 2 [label="no" color="#FF0000"]
+
+    1 [ label="KurtosisRB<6.57419968" ]
+    1 -> 3 [label="yes, missing" color="#0000FF"]
+    1 -> 4 [label="no" color="#FF0000"]
+
+    3 [ label="leaf=-0.169226095" ]
+
+    4 [ label="leaf=0.0450402088" ]
+
+    2 [ label="MeanRR<98.5963974" ]
+    2 -> 5 [label="yes, missing" color="#0000FF"]
+    2 -> 6 [label="no" color="#FF0000"]
+
+    5 [ label="leaf=0.699045002" ]
+
+    6 [ label="leaf=-0.110526316" ]
+}
